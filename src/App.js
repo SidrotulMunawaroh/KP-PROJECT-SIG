@@ -1,25 +1,43 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { useLoadScript } from '@react-google-maps/api';
+import Sidebar from './Sidebar';
+import MapContainer from './components/GoogleMap';
 import './App.css';
 
-function App() {
+const libraries = ['places'];
+
+const App = () => {
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: 'AIzaSyAtxv_YGV-BRegOOqy60wk2MWj2lHlTjKo', 
+    libraries,
+  });
+
+  const [selectedLatLng, setSelectedLatLng] = useState(null);
+  const [mapCenter, setMapCenter] = useState({ lat: -6.173381, lng: 106.824869 });
+
+  const handleSetCoordinates = (lat, lng) => {
+    setSelectedLatLng({ lat, lng });
+    setMapCenter({ lat, lng }); // Perbarui pusat peta
+  };
+
+  if (loadError) {
+    return <div>Error loading maps</div>;
+  }
+
+  if (!isLoaded) {
+    return <div>Loading maps</div>;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-container">
+      <Sidebar onSetCoordinates={handleSetCoordinates} />
+      <MapContainer
+        center={mapCenter} 
+        selectedLatLng={selectedLatLng}
+        setSelectedLatLng={setSelectedLatLng}
+      />
     </div>
   );
-}
+};
 
 export default App;
