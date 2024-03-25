@@ -10,7 +10,7 @@ const App = () => {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: 'AIzaSyAtxv_YGV-BRegOOqy60wk2MWj2lHlTjKo', 
     libraries,
-  });
+  }); 
 
   const [selectedLatLng, setSelectedLatLng] = useState(null);
   const [mapCenter, setMapCenter] = useState({ lat: -6.173381, lng: 106.824869 });
